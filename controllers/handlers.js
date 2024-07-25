@@ -100,22 +100,13 @@ async function handleVerificationOfOtp(req, res) {
     console.log("otp not found");
     return res.send("otp not found");
   }
-  console.log(findDocument.email);
-  req.email = findDocument.email;
-  const emailFunction = gatherEmail(findDocument.email);
-  console.log(req.email);
-  res.render("newPassword");
-}
-function gatherEmail(email) {
-  console.log("email is ", email);
-  return email;
+
+  res.render("newPassword", { email: findDocument.email });
 }
 
 async function handlePasswordChange(req, res) {
-  const { password } = req.body;
+  const { password, email } = req.body;
 
-  const email = req.email;
-  console(req.email);
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(password, salt);
   const user = await userModel.findOneAndUpdate(
