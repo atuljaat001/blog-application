@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const otpModel = require("../models/otp");
 const crypto = require("crypto");
-
+const { createToken, getUser } = require("../token/token");
 function handleRenderLogin(req, res) {
   res.render("login");
 }
@@ -45,6 +45,11 @@ async function handleLogin(req, res) {
       console.log("user not find");
       return null;
     }
+    // created a token and send it into a cookie named uid
+
+    const token = createToken(user);
+    console.log("token is", token);
+    res.cookie("uid", token);
     res.redirect("/home");
   } catch (err) {
     console.log("error in handleLogin function ", err);

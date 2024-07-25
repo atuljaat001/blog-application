@@ -4,8 +4,10 @@ const path = require("path");
 const ejs = require("ejs");
 const route = require("./routes/userRoutes");
 const { mongoConnect } = require("./connection");
+const cookieParser = require("cookie-parser");
 
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));

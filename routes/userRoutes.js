@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { checkLogin } = require("../middleware");
 const {
   handleRenderLogin,
   handleSignup,
@@ -13,7 +14,7 @@ const route = Router();
 
 route.route("/login").get(handleRenderLogin).post(handleLogin);
 route.route("/signup").get(handleRenderLogin).post(handleSignup);
-route.get("/home", handleRenderHome);
+route.get("/home", checkLogin, handleRenderHome);
 route.route("/forgot-password").get(handleforget).post(handleForgetPassword);
 route.post("/verify-otp", handleVerificationOfOtp);
 route.post("/create-new-password", handlePasswordChange);
