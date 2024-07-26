@@ -10,6 +10,8 @@ const {
   handleVerificationOfOtp,
   handlePasswordChange,
   handleLogout,
+  handleRenderBlog,
+  handleBlogPost,
 } = require("../controllers/handlers");
 const route = Router();
 
@@ -21,4 +23,6 @@ route.route("/forgot-password").get(handleforget).post(handleForgetPassword);
 route.post("/verify-otp", handleVerificationOfOtp);
 route.post("/create-new-password", handlePasswordChange);
 route.get("/logout", handleLogout);
+
+route.route("/blog").get(handleRenderBlog).post(handleBlogPost);
 module.exports = route;

@@ -4,6 +4,7 @@ const nodemailer = require("nodemailer");
 const otpModel = require("../models/otp");
 const crypto = require("crypto");
 const multer = require("multer");
+const blogModel = require("../models/blog");
 
 const { createToken, getUser } = require("../token/token");
 function handleRenderLogin(req, res) {
@@ -27,9 +28,19 @@ async function handleSignup(req, res) {
   }
 }
 
-function handleRenderHome(req, res) {
-  console.log(req.user);
-  res.render("home", { user: req.user });
+async function handleRenderHome(req, res) {
+  try {
+    // Ensure createdBy field is correct and matches your schema
+    const blogs = await blogModel
+      .find({ createdby: req.user._id })
+      .sort({ createdAt: -1 });
+    console.log(blogs);
+
+    res.render("home", { user: req.user, blogs: blogs });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
 }
 
 async function handleLogin(req, res) {
@@ -131,6 +142,35 @@ function handleLogout(req, res) {
   res.clearCookie("uid").redirect("/login");
 }
 
+async function handleRenderBlog(req, res) {
+  res.render("blog");
+  console.log(req.user);
+}
+
+async function handleBlogPost(req, res) {
+  try {
+    console.log("handleBlogPost function starts");
+    const { title, body } = req.body;
+
+    const blog = await blogModel.create({
+      title: title,
+      body: body,
+      createdby: req.user._id,
+    });
+
+    if (!blog) {
+      console.log("Blog is not created ");
+    }
+
+    res.redirect("/home");
+  } catch (err) {
+    if (err) {
+      console.log("err found in handleBlogPost function", err);
+      return null;
+    }
+  }
+}
+
 module.exports = {
   handleRenderLogin,
   handleSignup,
@@ -141,4 +181,6 @@ module.exports = {
   handleVerificationOfOtp,
   handlePasswordChange,
   handleLogout,
+  handleRenderBlog,
+  handleBlogPost,
 };

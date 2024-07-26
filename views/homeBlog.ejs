@@ -2,6 +2,13 @@
 <html lang="en">
   <head>
     <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
       .container {
         width: 80%;
         margin: 0 auto;
@@ -34,31 +41,22 @@
         color: #333;
       }
     </style>
-    <%- include('./partials/head') %>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Blog Post</title>
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <%- include('./partials/nav') %> <%- include('./partials/script') %>
-
     <div class="container">
-      <% if (blogs && blogs.length > 0) { %> <% blogs.forEach(function(blog) {
-      %>
       <div class="blog-post">
-        <h1 class="blog-title"><%= blog.title %></h1>
-        <% if (blog.coverImage) { %>
+        <h1 class="blog-title"><%= blogs.title %></h1>
         <img
-          src="<%= blog.coverImage %>"
+          src="<%= blogs.coverImage %>"
           alt="Cover Image"
           class="cover-image"
         />
-        <% } %>
-        <p class="blog-content"><%= blog.body %></p>
+        <p class="blog-content"><%= blogs.body %></p>
       </div>
-      <% }); %> <% } else { %>
-      <p>No blogs found.</p>
-      <% } %>
     </div>
   </body>
 </html>
