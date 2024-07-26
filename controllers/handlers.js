@@ -13,12 +13,16 @@ function handleRenderLogin(req, res) {
 
 async function handleSignup(req, res) {
   try {
-    const { fullName, email, password, profileImage } = req.body;
+    const { fullName, email, password } = req.body; //cant find image from req.body it is in req.file
+    const profileImageUrl = req.file
+      ? `static/uploads${req.file.filename}`
+      : "static/uploads/images.png";
+    console.log(profileImageUrl);
     const createUser = await userModel.create({
       fullName: fullName,
       email: email,
       password: password,
-      // profileImageUrl: profileImage,
+      profileImageUrl: profileImageUrl,
     });
 
     res.redirect("/login");
@@ -31,10 +35,10 @@ async function handleSignup(req, res) {
 async function handleRenderHome(req, res) {
   try {
     // Ensure createdBy field is correct and matches your schema
+    console.log("user object is ", req.user);
     const blogs = await blogModel
       .find({ createdby: req.user._id })
       .sort({ createdAt: -1 });
-    console.log(blogs);
 
     res.render("home", { user: req.user, blogs: blogs });
   } catch (err) {

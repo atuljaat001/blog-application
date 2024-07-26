@@ -13,10 +13,14 @@ const {
   handleRenderBlog,
   handleBlogPost,
 } = require("../controllers/handlers");
+const upload = require("../multer");
 const route = Router();
 
 route.route("/login").get(handleRenderLogin).post(handleLogin);
-route.route("/signup").get(handleRenderLogin).post(handleSignup);
+route
+  .route("/signup")
+  .get(handleRenderLogin)
+  .post(upload.single("image"), handleSignup);
 route.route("/forgot-password").get(handleforget).post(handleForgetPassword);
 route.post("/verify-otp", handleVerificationOfOtp);
 route.post("/create-new-password", handlePasswordChange);

@@ -7,7 +7,7 @@ const userSchema = new Schema(
     email: { type: String, required: true, unique: true },
 
     password: { type: String, required: true },
-    profileImageUrl: { type: String, default: "/images/default.png" },
+    profileImageUrl: { type: String, default: "static/uploads/images.png" },
     role: { type: String, enum: ["USER", "ADMIN"], default: "USER" },
   },
   { timestamps: true }

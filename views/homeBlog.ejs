@@ -47,11 +47,12 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
+    <%= req.user.profileImageUrl%>
     <div class="container">
       <div class="blog-post">
         <h1 class="blog-title"><%= blogs.title %></h1>
         <img
-          src="<%= blogs.coverImage %>"
+          src="<%= req.user.profileImageUrl %>"
           alt="Cover Image"
           class="cover-image"
         />

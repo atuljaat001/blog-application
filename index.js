@@ -6,6 +6,7 @@ const route = require("./routes/userRoutes");
 const { mongoConnect } = require("./connection");
 const cookieParser = require("cookie-parser");
 
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 

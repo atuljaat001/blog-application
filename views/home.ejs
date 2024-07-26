@@ -43,13 +43,18 @@
     <%- include('./partials/nav') %> <%- include('./partials/script') %>
 
     <div class="container">
-      <% if (blogs && blogs.length > 0) { %> <% blogs.forEach(function(blog) {
-      %>
+      <h1>profile image</h1>
+      <img
+        src="<%= user.profileImageUrl %>"
+        alt="Cover Image"
+        class="cover-image"
+      />
+      <% if (blogs && blogs.length > 0) { %> <% blogs.forEach(function(blog) {%>
       <div class="blog-post">
         <h1 class="blog-title"><%= blog.title %></h1>
-        <% if (blog.coverImage) { %>
+        <% if (user.profileImageUrl) { %>
         <img
-          src="<%= blog.coverImage %>"
+          src="<%= user.profileImageUrl %>"
           alt="Cover Image"
           class="cover-image"
         />
