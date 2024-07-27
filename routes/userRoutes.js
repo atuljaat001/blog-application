@@ -14,6 +14,7 @@ const {
   handleBlogPost,
 } = require("../controllers/handlers");
 const upload = require("../multer");
+const upload2 = require("../multer2");
 const route = Router();
 
 route.route("/login").get(handleRenderLogin).post(handleLogin);
@@ -29,5 +30,9 @@ route.get("/home", handleRenderHome);
 
 route.get("/logout", handleLogout);
 
-route.route("/blog").get(handleRenderBlog).post(handleBlogPost);
+route
+  .route("/blog")
+  .get(handleRenderBlog)
+  .post(upload2.single("coverImage"), handleBlogPost);
+
 module.exports = route;

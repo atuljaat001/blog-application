@@ -14,15 +14,15 @@ function handleRenderLogin(req, res) {
 async function handleSignup(req, res) {
   try {
     const { fullName, email, password } = req.body; //cant find image from req.body it is in req.file
-    const profileImageUrl = req.file
-      ? `static/uploads${req.file.filename}`
-      : "static/uploads/images.png";
-    console.log(profileImageUrl);
+    // const profileImageUrl = req.file
+    //   ? `/static/uploads${req.file.filename}`
+    //   : "static/uploads/images.png";
+    // console.log(profileImageUrl);
     const createUser = await userModel.create({
       fullName: fullName,
       email: email,
       password: password,
-      profileImageUrl: profileImageUrl,
+      profileImageUrl: `static/uploads/${req.file.filename}`,
     });
 
     res.redirect("/login");
@@ -35,7 +35,7 @@ async function handleSignup(req, res) {
 async function handleRenderHome(req, res) {
   try {
     // Ensure createdBy field is correct and matches your schema
-    console.log("user object is ", req.user);
+    // console.log("user object is ", req.user);
     const blogs = await blogModel
       .find({ createdby: req.user._id })
       .sort({ createdAt: -1 });
@@ -53,10 +53,10 @@ async function handleLogin(req, res) {
     const { email, password } = req.body;
     const user = await userModel.findOne({ email: email });
     if (!user) {
-      console.log("on the based on email user is found");
-      return null;
+      console.log("on the based on email user is not found");
+      return res.redirect("/login");
     }
-    console.log(user);
+    // console.log(user);
     const hashPassword = await bcrypt.compare(password, user.password);
     console.log(hashPassword);
     if (!hashPassword) {
@@ -66,7 +66,7 @@ async function handleLogin(req, res) {
     // created a token and send it into a cookie named uid
 
     const token = createToken(user);
-    console.log("token is", token);
+    // console.log("token is", token);
     res.cookie("uid", token);
     res.redirect("/home");
   } catch (err) {
@@ -148,17 +148,19 @@ function handleLogout(req, res) {
 
 async function handleRenderBlog(req, res) {
   res.render("blog");
-  console.log(req.user);
+  // console.log(req.user);
 }
 
 async function handleBlogPost(req, res) {
   try {
     console.log("handleBlogPost function starts");
+    console.log(req.file);
     const { title, body } = req.body;
-
+    const coverImage = req.file ? `static/uploads2/${req.file.filename}` : null;
     const blog = await blogModel.create({
       title: title,
       body: body,
+      coverImage: coverImage,
       createdby: req.user._id,
     });
 

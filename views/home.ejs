@@ -28,6 +28,14 @@
         margin-bottom: 20px;
       }
 
+      .profile-image {
+        width: 100px; /* Adjust as needed */
+        height: 100px; /* Adjust as needed */
+        border-radius: 50%;
+        margin-bottom: 10px;
+        object-fit: cover; /* Ensures the image covers the box without distortion */
+      }
+
       .blog-content {
         font-size: 1.2em;
         line-height: 1.6;
@@ -43,22 +51,29 @@
     <%- include('./partials/nav') %> <%- include('./partials/script') %>
 
     <div class="container">
-      <h1>profile image</h1>
-      <img
-        src="<%= user.profileImageUrl %>"
-        alt="Cover Image"
-        class="cover-image"
-      />
-      <% if (blogs && blogs.length > 0) { %> <% blogs.forEach(function(blog) {%>
+      <% if (blogs && blogs.length > 0) { %> <% blogs.forEach(function(blog) {
+      %>
       <div class="blog-post">
-        <h1 class="blog-title"><%= blog.title %></h1>
+        <!-- Display Profile Image -->
         <% if (user.profileImageUrl) { %>
         <img
           src="<%= user.profileImageUrl %>"
+          alt="Profile Image"
+          class="profile-image"
+        />
+        <% } %>
+
+        <h1 class="blog-title"><%= blog.title %></h1>
+
+        <!-- Display Cover Image -->
+        <% if (blog.coverImage) { %>
+        <img
+          src="<%= blog.coverImage %>"
           alt="Cover Image"
           class="cover-image"
         />
         <% } %>
+
         <p class="blog-content"><%= blog.body %></p>
       </div>
       <% }); %> <% } else { %>
