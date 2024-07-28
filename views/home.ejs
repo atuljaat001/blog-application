@@ -3,43 +3,11 @@
   <head>
     <style>
       .container {
-        width: 80%;
-        margin: 0 auto;
-        padding: 20px;
+        margin: 2cm 0 0 2cm;
       }
-
-      .blog-post {
-        background: #fff;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        margin-top: 20px;
-      }
-
-      .blog-title {
-        font-size: 2.5em;
-        margin-bottom: 10px;
-      }
-
-      .cover-image {
-        width: 100%;
-        height: auto;
-        border-radius: 5px;
-        margin-bottom: 20px;
-      }
-
-      .profile-image {
-        width: 100px; /* Adjust as needed */
-        height: 100px; /* Adjust as needed */
-        border-radius: 50%;
-        margin-bottom: 10px;
-        object-fit: cover; /* Ensures the image covers the box without distortion */
-      }
-
-      .blog-content {
-        font-size: 1.2em;
-        line-height: 1.6;
-        color: #333;
+      .card-img-top {
+        height: 200px; /* Adjust this value as needed */
+        object-fit: cover;
       }
     </style>
     <%- include('./partials/head') %>
@@ -51,34 +19,23 @@
     <%- include('./partials/nav') %> <%- include('./partials/script') %>
 
     <div class="container">
-      <% if (blogs && blogs.length > 0) { %> <% blogs.forEach(function(blog) {
-      %>
-      <div class="blog-post">
-        <!-- Display Profile Image -->
-        <% if (user.profileImageUrl) { %>
-        <img
-          src="<%= user.profileImageUrl %>"
-          alt="Profile Image"
-          class="profile-image"
-        />
-        <% } %>
-
-        <h1 class="blog-title"><%= blog.title %></h1>
-
-        <!-- Display Cover Image -->
-        <% if (blog.coverImage) { %>
-        <img
-          src="<%= blog.coverImage %>"
-          alt="Cover Image"
-          class="cover-image"
-        />
-        <% } %>
-
-        <p class="blog-content"><%= blog.body %></p>
+      <div class="row">
+        <% blogs.forEach(blog => { %>
+        <div class="col-md-4">
+          <div class="card m-3" style="width: 100%">
+            <% if (blog.coverImage) { %>
+            <img src="<%=blog.coverImage%>" class="card-img-top" alt="" />
+            <% } %>
+            <div class="card-body">
+              <h5 class="card-title"><%=blog.title%></h5>
+              <a href="/blog/<%=blog._id%>" class="btn btn-primary"
+                >View Blog</a
+              >
+            </div>
+          </div>
+        </div>
+        <% }) %>
       </div>
-      <% }); %> <% } else { %>
-      <p>No blogs found.</p>
-      <% } %>
     </div>
   </body>
 </html>

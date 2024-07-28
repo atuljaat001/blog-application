@@ -5,6 +5,7 @@ const otpModel = require("../models/otp");
 const crypto = require("crypto");
 const multer = require("multer");
 const blogModel = require("../models/blog");
+const commentModel = require("../models/comment");
 
 const { createToken, getUser } = require("../token/token");
 function handleRenderLogin(req, res) {
@@ -58,7 +59,7 @@ async function handleLogin(req, res) {
     }
     // console.log(user);
     const hashPassword = await bcrypt.compare(password, user.password);
-    console.log(hashPassword);
+    // console.log(hashPassword);
     if (!hashPassword) {
       console.log("user not find");
       return res.redirect("/login");
@@ -154,7 +155,7 @@ async function handleRenderBlog(req, res) {
 async function handleBlogPost(req, res) {
   try {
     console.log("handleBlogPost function starts");
-    console.log(req.file);
+    // console.log(req.file);
     const { title, body } = req.body;
     const coverImage = req.file ? `static/uploads2/${req.file.filename}` : null;
     const blog = await blogModel.create({
@@ -177,6 +178,56 @@ async function handleBlogPost(req, res) {
   }
 }
 
+async function handleComment(req, res) {
+  try {
+    console.log("HandleComment function starts");
+
+    const { content } = req.body;
+    const comment = await commentModel.create({
+      content: content,
+      createdby: req.user._id,
+      blogID: req.params.id,
+    });
+
+    res.redirect(`/blog/${req.params.id}`);
+  } catch (err) {
+    if (err) {
+      console.log(err);
+      return res.redirect("/home");
+    }
+  }
+}
+
+async function handlePersonalBlog(req, res) {
+  const blogId = req.params.id;
+  // console.log(blogId);
+  const blog = await blogModel.findOne({ _id: blogId });
+
+  const comment = await commentModel.find({ blogID: blogId });
+  // console.log("comments are ", comment);
+  res.render("personalBlog", {
+    blog: blog,
+    user: req.user,
+    comments: comment,
+  });
+}
+
+async function handleBlogEdit(req, res) {
+  const blogID = req.params.id;
+  const blog = await blogModel.findOne({ _id: blogID });
+  res.render("edit-blog", { user: req.user, blog: blog });
+}
+
+async function handleBlogDelete(req, res) {
+  const blogID = req.params.id;
+  const blog = await blogModel.findOneAndDelete({ _id: blogID });
+  res.redirect("/home");
+}
+async function handleDeleteComment(req, res) {
+  const commentID = req.params.id;
+  const comment = await commentModel.findOneAndDelete({ _id: commentID });
+  res.redirect(`/blog/${comment.blogID}`);
+}
 module.exports = {
   handleRenderLogin,
   handleSignup,
@@ -189,4 +240,9 @@ module.exports = {
   handleLogout,
   handleRenderBlog,
   handleBlogPost,
+  handleComment,
+  handlePersonalBlog,
+  handleBlogDelete,
+  handleBlogEdit,
+  handleDeleteComment,
 };
