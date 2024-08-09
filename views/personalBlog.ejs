@@ -43,6 +43,7 @@
         font-size: 1.2em;
         line-height: 1.6;
         color: #333;
+        overflow-x: auto;
       }
 
       .comment-form {
@@ -150,7 +151,7 @@
           class="cover-image"
         />
         <% } %>
-        <p class="blog-content"><%= blog.body %></p>
+        <pre class="blog-content"><%= blog.body %></pre>
       </div>
 
       <!-- Comment Form -->
@@ -172,14 +173,14 @@
       comments.forEach(function(comment) { %>
       <div class="comment">
         <!-- Display Commenter's Profile Image -->
-        <% if (user.profileImageUrl) { %>
+        <% if (comment.createdby.profileImageUrl) { %>
         <img
-          src="/<%= user.profileImageUrl %>"
+          src="/<%= comment.createdby.profileImageUrl%>"
           alt="User Profile Image"
           class="profile-image"
         />
         <% } %>
-        <p><strong><%= user.fullName %></strong></p>
+        <p><strong><%=comment.createdby.fullName %></strong></p>
         <p><%= comment.content %></p>
 
         <!-- Dropdown menu for comment actions -->

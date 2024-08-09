@@ -7,6 +7,7 @@ async function checkLogin(req, res, next) {
       return res.redirect("/login");
     }
     const user = getUser(token);
+    // console.log(user);
     if (!user) {
       return res.redirect("/login");
     }
@@ -17,4 +18,18 @@ async function checkLogin(req, res, next) {
   }
 }
 
-module.exports = { checkLogin };
+// authorization middleware
+
+function authorization(roles) {
+  return function (req, res, next) {
+    console.log("authorization function starts");
+
+    if (roles.includes(req.user.role)) {
+      next();
+    } else {
+      res.send("You are not authorized");
+    }
+  };
+}
+
+module.exports = { checkLogin, authorization };
