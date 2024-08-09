@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Management</title>
+    <style>
+      .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f4f4f4;
+      }
+
+      .delete-link {
+        color: red;
+        text-decoration: none;
+      }
+
+      .delete-link:hover {
+        text-decoration: underline;
+      }
+
+      .add-link {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+
+      .add-link:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>User Management</h1>
+      <a href="/admin/add-user" class="add-link">Add User</a>
+      <a href="/home" class="add-link">Home</a>
+      <p>Total Users: <%= users.length %></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(function(user) { %>
+          <tr>
+            <td><%= user.fullName %></td>
+            <td><%= user.email %></td>
+            <td>
+              <% if (user.role.includes("ADMIN")) { %>
+              <h4>Can't Delete Admin</h4>
+              <% } %> <% if (!user.role.includes("ADMIN")) { %>
+              <a href="/admin/delete-user/<%= user._id %>" class="delete-link"
+                >Delete</a
+              >
+              <% } %>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

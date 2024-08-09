@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      .container {
+        margin: 2cm 0 0 2cm;
+      }
+      .card-img-top {
+        height: 200px; /* Adjust this value as needed */
+        object-fit: cover;
+      }
+    </style>
+    <%- include('./partials/head') %>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <%- include('./partials/nav') %> <%- include('./partials/script') %>
+
+    <div class="container">
+      <div class="row">
+        <% blogs.forEach(blog => { %>
+        <div class="col-md-4">
+          <div class="card m-3" style="width: 100%">
+            <% if (blog.coverImage) { %>
+            <img src="<%=blog.coverImage%>" class="card-img-top" alt="" />
+            <% } %>
+            <div class="card-body">
+              <h5 class="card-title"><%=blog.title%></h5>
+              <a href="/blog/home-blog/<%=blog._id%>" class="btn btn-primary"
+                >View Blog</a
+              >
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </body>
+</html>
