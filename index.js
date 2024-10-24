@@ -14,7 +14,7 @@ app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
 mongoConnect("mongodb://127.0.0.1:27017/blogify");
-const PORT = 8000;
+const PORT = 8070;
 app.use("/", route);
 app.listen(PORT, () => {
   console.log(`Server is started listening at http://localhost:${PORT}/login`);
